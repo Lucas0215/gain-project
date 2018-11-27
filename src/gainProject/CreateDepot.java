@@ -22,20 +22,21 @@ public class CreateDepot {
 	}
 
 	public void add(String[] shopInfo) throws IOException {
-		int result=DepotUtil.search(shopInfo[1], storeList);
-		if (result == -1) {
-			storeList.add(shopInfo);
-			storeInfoList.add(shopInfo[0] + " " + shopInfo[1] + " " + shopInfo[2]);
-			new SaveRestaurantList(storeInfoList);
-		}
+		storeList.add(shopInfo);
+		storeInfoList.add(shopInfo[0] + " " + shopInfo[1] + " " + shopInfo[2]);
+		new SaveRestaurantList(storeInfoList);
 	}
 
-	public void delete(String name) throws IOException {
-		int result=DepotUtil.search(name, storeList);
-		if (result >= 0) {
-			storeList.removeElementAt(result);
-			storeInfoList.removeElementAt(result);
-			new SaveRestaurantList(storeInfoList);
-		}
+	public void delete(int num) throws IOException {
+		storeList.remove(num);
+		storeInfoList.remove(num);
+		new SaveRestaurantList(storeInfoList);
+	}
+
+	public void modify(String[] shopInfo, int num) throws IOException {
+		storeList.remove(num);
+		storeList.add(num, shopInfo);
+		storeInfoList.remove(num);
+		storeInfoList.add(num, shopInfo[0] + " " + shopInfo[1] + " " + shopInfo[2]);
 	}
 }
