@@ -9,7 +9,7 @@ public class Main {
 		Vector<String> storeInfoList = new Vector<>();
 		new GetRestaurantList(storeInfoList);
 		CreateDepot store = new CreateDepot(storeInfoList);
-		Scanner scan = new Scanner(System.in);
+		/*Scanner scan = new Scanner(System.in);
 
 		String[] info = new String[3];
 		int num;
@@ -52,7 +52,8 @@ public class Main {
 				break;
 			}
 		}
-		scan.close();
+		scan.close();*/
+		new UserInterface(store);
 	}
 }
 

@@ -52,6 +52,7 @@ public class DepotUtil {
 		Vector<String> sortedList = new Vector<String>();
 		for (int i = 0; i < storeList.length; i++)
 			sortedList.add(storeList[i]);
+
 		return sortedList;
 	}
 }
