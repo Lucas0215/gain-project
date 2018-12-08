@@ -7,65 +7,30 @@ import java.util.Scanner;
 public class Main {
 	public static void main(String[] args) throws IOException {
 		Vector<String> storeInfoList = new Vector<>();
-		new GetRestaurantList(storeInfoList);
-		CreateDepot store = new CreateDepot(storeInfoList);
-		/*Scanner scan = new Scanner(System.in);
+		Vector<String> typeList = new Vector<>();
+		Vector<String> locationList = new Vector<>();
 
-		String[] info = new String[3];
-		int num;
+		File restaurantFile = new File("./res/restaurantinfo.txt");
+		File typeFile = new File("./res/typelist.txt");
+		File locationFile = new File("./res/locationlist.txt");
 
-		while (true) {
-			System.out.println(store.storeInfoList);
-			System.out.println("0 : exit 1 : add 2: delete 3 : modify 4 : random");
-			String answer = scan.next();
-			if (answer.equals("0"))
-				break;
+		new GetRestaurantList(restaurantFile, storeInfoList);
+		new GetRestaurantList(typeFile, typeList);
+		new GetRestaurantList(locationFile, locationList);
 
-			switch (answer) {
-			case "1":
-				System.out.println("추가할 정보");
-				for (int i = 0; i < 3; i++)
-					info[i] = scan.next();
-				store.add(info);
-				break;
-			case "2":
-				System.out.println("지울 번호");
-				num = scan.nextInt();
-				store.delete(num);
-				break;
-			case "3":
-				System.out.println("바꿀 번호");
-				num = scan.nextInt();
-				System.out.println("정보 재입력");
-				for (int i = 0; i < 3; i++)
-					info[i] = scan.next();
-				store.modify(info, num);
-				break;
-			case "4":
-				String[] a = DepotUtil.randomRecommend(store.storeList);
-				System.out.println(a[0] + " " + a[1] + " " + a[2]);
-				break;
-			case "5":
-				Vector<String> ab = DepotUtil.sort(store.storeInfoList);
-				System.out.println(ab);
-			default:
-				break;
-			}
-		}
-		scan.close();*/
+		CreateDepot store = new CreateDepot(storeInfoList, typeList, locationList);
 		new UserInterface(store);
 	}
 }
 
 class GetRestaurantList {
-	public GetRestaurantList(Vector<String> storeInfoList) throws IOException {
-		File restaurantFile = new File("./res/restaurantinfo.txt");
-		FileReader fileReader = new FileReader(restaurantFile);
+	public GetRestaurantList(File file, Vector<String> List) throws IOException {
+		FileReader fileReader = new FileReader(file);
 		BufferedReader storeList = new BufferedReader(fileReader);
 		String storeInfo = "";
 
 		while ((storeInfo = storeList.readLine()) != null)
-			storeInfoList.add(storeInfo);
+			List.add(storeInfo);
 
 		storeList.close();
 		fileReader.close();
@@ -77,6 +42,26 @@ class SaveRestaurantList {
 		BufferedWriter writer = new BufferedWriter(new FileWriter("./res/restaurantinfo.txt"));
 		for (int i = 0; i < storeInfoList.size(); i++)
 			writer.write(storeInfoList.get(i) + "\r\n");
+
+		writer.close();
+	}
+}
+
+class SaveTypeList {
+	public SaveTypeList(Vector<String> typeList) throws IOException {
+		BufferedWriter writer = new BufferedWriter(new FileWriter("./res/typelist.txt"));
+		for (int i = 0; i < typeList.size(); i++)
+			writer.write(typeList.get(i) + "\r\n");
+
+		writer.close();
+	}
+}
+
+class SaveLocationList {
+	public SaveLocationList(Vector<String> locationList) throws IOException {
+		BufferedWriter writer = new BufferedWriter(new FileWriter("./res/locationlist.txt"));
+		for (int i = 0; i < locationList.size(); i++)
+			writer.write(locationList.get(i) + "\r\n");
 
 		writer.close();
 	}
