@@ -15,6 +15,9 @@ class RandomChoosePage extends JPanel {
 		JTextField type = new JTextField(55);
 		JTextField name = new JTextField(55);
 		JTextField location = new JTextField(55);
+		type.setEditable(false);
+		name.setEditable(false);
+		location.setEditable(false);
 
 		setLayout(new GridLayout(4, 2));
 		add(new JLabel("Á¾·ù  : "));

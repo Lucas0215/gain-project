@@ -4,15 +4,16 @@ import java.util.Vector;
 
 public class DepotUtil {
 
-	public static Vector<String[]> search(String content, Vector<String[]> shopList, int searchType) {
-		Vector<String[]> result = new Vector<>();
+	public static Vector<Integer> search(String content, Vector<String[]> shopList, int searchType) {
+		Vector<Integer> result = new Vector<>();
 
 		for (int i = 0; i < shopList.size(); i++) {
 			String[] shop = shopList.get(i);
-			if (shop[searchType].equals(content)) {
-				result.add(shop);
-				break;
-			}
+			String searchingShop=shop[searchType];
+			if (searchingShop.indexOf(content) != -1)
+				result.add(i);
+			else
+				result.add(-1);
 		}
 		return result;
 	}
@@ -40,7 +41,6 @@ public class DepotUtil {
 		for (int i = 0; i < storeList.length; i++) {
 			for (int j = 0; j < storeList.length - i - 1; j++) {
 				if (storeList[j].compareTo(storeList[j + 1]) > 0) {
-					System.out.print("1");
 					tempString = storeList[j + 1];
 					storeList[j + 1] = storeList[j];
 					storeList[j] = tempString;

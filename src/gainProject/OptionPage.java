@@ -4,6 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.Vector;
 
 class OptionPage extends JPanel {
 	String type, location;
@@ -11,9 +12,9 @@ class OptionPage extends JPanel {
 	public OptionPage(CreateDepot store, CardLayout card, Container container) {
 		setLayout(new BorderLayout());
 		add(new JLabel("지도를 사용한 위치 지정은 준비중입니다.."), BorderLayout.NORTH);
-		JPanel center=new JPanel();
+		JPanel center = new JPanel();
 		add(center, BorderLayout.CENTER);
-		
+
 		JButton typeAdd = new JButton("종류 추가");
 		typeAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -37,7 +38,7 @@ class OptionPage extends JPanel {
 
 			}
 		});
-		
+
 		JButton locationAdd = new JButton("위치 추가");
 		locationAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -61,11 +62,26 @@ class OptionPage extends JPanel {
 
 			}
 		});
+
+		JButton sortButton = new JButton("리스트 정렬");
+		sortButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Vector<String> sortedList = DepotUtil.sort(store.storeInfoList);
+				try {
+					JOptionPane.showMessageDialog(null, "적용완료", "성공!", JOptionPane.INFORMATION_MESSAGE);
+					new SaveRestaurantList(sortedList);
+					new UserInterface(store);
+				} catch (IOException ioe) {
+				}
+			}
+		});
+
 		JButton exitButton = new JButton("나가기");
 		exitButton.addMouseListener(new PageChanger(card, container));
 
 		center.add(typeAdd);
 		center.add(locationAdd);
+		center.add(sortButton);
 		center.add(exitButton);
 	}
 }

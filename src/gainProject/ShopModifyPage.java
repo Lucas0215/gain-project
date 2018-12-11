@@ -14,10 +14,12 @@ class ShopModifyPage extends JPanel {
 		CenterPanel centerPanel = new CenterPanel(store);
 		EastPanel eastPanel = new EastPanel(store, centerPanel);
 		NorthPanel northPanel = new NorthPanel(centerPanel, eastPanel, store, card, container);
+		SouthPanel southPanel = new SouthPanel(store, centerPanel);
 
 		add(centerPanel, BorderLayout.CENTER);
 		add(eastPanel, BorderLayout.EAST);
 		add(northPanel, BorderLayout.NORTH);
+		add(southPanel, BorderLayout.SOUTH);
 	}
 }
 
@@ -33,6 +35,8 @@ class NorthPanel extends JPanel {
 				eastPanel.setVisible(true);
 				eastPanel.getEvent(source);
 				centerPanel.warning.setVisible(false);
+				eastPanel.mode1.setVisible(true);
+				eastPanel.mode2.setVisible(false);
 			}
 		});
 		add(addButton);
@@ -47,6 +51,8 @@ class NorthPanel extends JPanel {
 					centerPanel.warning.setVisible(false);
 					eastPanel.setVisible(true);
 					eastPanel.getEvent(source);
+					eastPanel.mode2.setVisible(true);
+					eastPanel.mode1.setVisible(false);
 				} else
 					centerPanel.warning.setVisible(true);
 			}
@@ -101,8 +107,8 @@ class CenterPanel extends JPanel {
 			}
 		};
 		shopList = new JTable(shopControl);
+		shopList.setColumnSelectionAllowed(false);
 		add(new JScrollPane(shopList));
-
 		warning = new JLabel("수정/삭제할 행을 선택하세요");
 		warning.setVisible(false);
 		add(warning);
@@ -113,11 +119,17 @@ class EastPanel extends JPanel {
 	GridBagConstraints constraint = new GridBagConstraints();
 	GridBagLayout gbl = new GridBagLayout();
 	String source;
+	JLabel mode1, mode2;
 
 	public EastPanel(CreateDepot store, CenterPanel centerPanel) {
-		TypePanel typePanel=new TypePanel(store);
-		LocationPanel locationPanel=new LocationPanel(store);
-		
+		TypePanel typePanel = new TypePanel(store);
+		LocationPanel locationPanel = new LocationPanel(store);
+
+		mode1 = new JLabel("추가하기");
+		mode1.setVisible(false);
+		mode2 = new JLabel("수정하기");
+		mode2.setVisible(false);
+
 		constraint.weightx = 1;
 		constraint.weighty = 1;
 
@@ -159,15 +171,17 @@ class EastPanel extends JPanel {
 			}
 		});
 
-		layoutSet(new JLabel("종류"), 2, 0, 1, 1);
-		layoutSet(typePanel, 0, 1, 5, 1);
-		layoutSet(new JLabel("이름"), 2, 2, 1, 1);
-		layoutSet(name, 0, 3, 5, 1);
-		layoutSet(new JLabel("위치"), 2, 4, 1, 1);
-		layoutSet(locationPanel, 0, 5, 5, 1);
+		layoutSet(mode1, 0, 0, 5, 1);
+		layoutSet(mode2, 0, 0, 5, 1);
+		layoutSet(new JLabel("종류"), 2, 1, 1, 1);
+		layoutSet(typePanel, 0, 2, 5, 1);
+		layoutSet(new JLabel("이름"), 2, 3, 1, 1);
+		layoutSet(name, 0, 4, 5, 1);
+		layoutSet(new JLabel("위치"), 2, 5, 1, 1);
+		layoutSet(locationPanel, 0, 5, 6, 1);
 
-		layoutSet(confirmButton, 1, 6, 1, 1);
-		layoutSet(cancelButton, 3, 6, 1, 1);
+		layoutSet(confirmButton, 1, 7, 1, 1);
+		layoutSet(cancelButton, 3, 7, 1, 1);
 	}
 
 	public void layoutSet(Component c, int x, int y, int width, int height) {
@@ -229,5 +243,34 @@ class LocationPanel extends JPanel {
 			locationGroup.add(locationButton);
 			add(locationButton);
 		}
+	}
+}
+
+class SouthPanel extends JPanel {
+	Vector<Integer> searchResult;
+
+	public SouthPanel(CreateDepot store, CenterPanel centerPanel) {
+		String[] searchType = { "종류로 찾기", "이름으로 찾기", "위치로 찾기" };
+		setLayout(new FlowLayout());
+		JComboBox<String> typeSearch = new JComboBox<>(searchType);
+		add(typeSearch);
+
+		JTextField searchArea = new JTextField(55);
+		searchArea.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JTextField searchData = (JTextField) e.getSource();
+				int type = typeSearch.getSelectedIndex();
+				String input = searchData.getText();
+				searchResult = DepotUtil.search(input, store.storeList, type);
+
+				for(int i=0;i<store.storeList.size(); i++)
+					if(searchResult.get(i)==-1)
+						centerPanel.shopControl.removeRow(i);
+						
+				
+				// centerPanel.shopList.setRowSel
+			}
+		});
+		add(searchArea);
 	}
 }
