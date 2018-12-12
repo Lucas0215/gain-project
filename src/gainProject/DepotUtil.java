@@ -24,14 +24,13 @@ public class DepotUtil {
 		return randomShop;
 	}
 
-	public static Vector<String[]> ban(Vector<String[]> shopList, Vector<String> banList) {
+	public static void ban(Vector<String[]> shopList, Vector<String> banList, int searchType) {
 		for (int i = 0; i < shopList.size(); i++) {
 			String[] shop = shopList.get(i);
 			for (int j = 0; j < banList.size(); j++)
-				if (banList.get(j).equals(shop[0]))
+				if (banList.get(j).equals(shop[searchType]))
 					shopList.remove(i);
 		}
-		return shopList;
 	}
 
 	public static Vector<String> sort(Vector<String> shopList) {

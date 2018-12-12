@@ -90,12 +90,14 @@ class NorthPanel extends JPanel {
 }
 
 class CenterPanel extends JPanel {
+	ColorChanger r;
 	DefaultTableModel shopControl;
 	JTable shopList;
 	JLabel warning;
 
 	public CenterPanel(CreateDepot store) {
 		setLayout(new FlowLayout());
+		r = new ColorChanger(store.storeInfoList);
 		String[][] shopInfo = new String[store.storeList.size()][3];
 		String[] bogi = { "종류", "이름", "위치" };
 		for (int i = 0; i < store.storeList.size(); i++)
@@ -108,10 +110,39 @@ class CenterPanel extends JPanel {
 		};
 		shopList = new JTable(shopControl);
 		shopList.setColumnSelectionAllowed(false);
+		shopList.setOpaque(true);
+		shopList.setDefaultRenderer(Object.class, r);
+
 		add(new JScrollPane(shopList));
 		warning = new JLabel("수정/삭제할 행을 선택하세요");
 		warning.setVisible(false);
 		add(warning);
+	}
+}
+
+class ColorChanger implements TableCellRenderer {
+	DefaultTableCellRenderer dr = new DefaultTableCellRenderer();
+	Vector<Integer> colorMap = new Vector<>();
+
+	public ColorChanger(Vector<String> shopList) {
+		for (int i = 0; i < shopList.size(); i++)
+			colorMap.add(-1);
+	}
+
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+			int row, int column) {
+		Component c = dr.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+		if (colorMap.get(row) != -1)
+			c.setForeground(Color.RED);
+		else
+			c.setForeground(Color.BLACK);
+
+		return c;
+	}
+
+	public void getColorMap(Vector<Integer> colorMap) {
+		this.colorMap = colorMap;
 	}
 }
 
@@ -145,21 +176,25 @@ class EastPanel extends JPanel {
 				shopData[0] = typePanel.selected;
 				shopData[1] = name.getText();
 				shopData[2] = locationPanel.selected;
-				if (source.equals("추가"))
-					try {
-						centerPanel.shopControl.addRow(shopData);
-						store.add(shopData);
-					} catch (IOException ioe) {
-					}
-				else if (source.equals("수정"))
-					try {
-						int selected = centerPanel.shopList.getSelectedRow();
-						centerPanel.shopControl.removeRow(selected);
-						centerPanel.shopControl.insertRow(selected, shopData);
-						store.modify(shopData, selected);
-					} catch (IOException ioe) {
-					}
-				name.setText(null);
+				if (typePanel.selected == null || locationPanel.selected == null)
+					JOptionPane.showMessageDialog(null, "체크를 다 해주세요", "위험!", JOptionPane.ERROR_MESSAGE);
+				else {
+					if (source.equals("추가"))
+						try {
+							centerPanel.shopControl.addRow(shopData);
+							store.add(shopData);
+						} catch (IOException ioe) {
+						}
+					else if (source.equals("수정"))
+						try {
+							int selected = centerPanel.shopList.getSelectedRow();
+							centerPanel.shopControl.removeRow(selected);
+							centerPanel.shopControl.insertRow(selected, shopData);
+							store.modify(shopData, selected);
+						} catch (IOException ioe) {
+						}
+					name.setText(null);
+				}
 			}
 		});
 
@@ -261,14 +296,11 @@ class SouthPanel extends JPanel {
 				JTextField searchData = (JTextField) e.getSource();
 				int type = typeSearch.getSelectedIndex();
 				String input = searchData.getText();
-				searchResult = DepotUtil.search(input, store.storeList, type);
-
-				for(int i=0;i<store.storeList.size(); i++)
-					if(searchResult.get(i)==-1)
-						centerPanel.shopControl.removeRow(i);
-						
-				
-				// centerPanel.shopList.setRowSel
+				if (!input.equals("")) {
+					searchResult = DepotUtil.search(input, store.storeList, type);
+					centerPanel.r.getColorMap(searchResult);
+					centerPanel.repaint();
+				}
 			}
 		});
 		add(searchArea);
