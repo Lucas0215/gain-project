@@ -213,7 +213,7 @@ class EastPanel extends JPanel {
 		layoutSet(new JLabel("이름"), 2, 3, 1, 1);
 		layoutSet(name, 0, 4, 5, 1);
 		layoutSet(new JLabel("위치"), 2, 5, 1, 1);
-		layoutSet(locationPanel, 0, 5, 6, 1);
+		layoutSet(locationPanel, 0, 6, 5, 1);
 
 		layoutSet(confirmButton, 1, 7, 1, 1);
 		layoutSet(cancelButton, 3, 7, 1, 1);

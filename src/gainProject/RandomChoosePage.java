@@ -38,10 +38,6 @@ class RandomChoosePage extends JPanel {
 				Vector<String[]> storeList = store.storeList;
 				DepotUtil.ban(storeList, banPanel.getTypeBanList(), 0);
 				DepotUtil.ban(storeList, banPanel.getLocationBanList(), 2);
-
-				System.out.println(banPanel.getTypeBanList().size() + "\n" + banPanel.getLocationBanList().size());
-				System.out.println(store.storeList.size() + " " + storeList.size());
-
 				randomShop = DepotUtil.randomRecommend(storeList);
 
 				type.setText(randomShop[0]);
@@ -50,7 +46,7 @@ class RandomChoosePage extends JPanel {
 			}
 		});
 		layoutSet(new JLabel(""), 0, 4, 1, 1);
-		layoutSet(doRandom, 1, 4, 3, 1);
+		layoutSet(doRandom, 2, 4, 3, 1);
 
 		JButton exitButton = new JButton("³ª°¡±â");
 		exitButton.addMouseListener(new PageChanger(card, container));
