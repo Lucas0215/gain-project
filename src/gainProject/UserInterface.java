@@ -9,7 +9,7 @@ public class UserInterface extends JFrame {
 	Container container = getContentPane();
 
 	public UserInterface(CreateDepot store) {
-		setTitle("결정장애 ㅎㅇ");
+		setTitle("메뉴를 못정하겠다고?");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(card);
 		add("frame1", new StartPage(card, container));

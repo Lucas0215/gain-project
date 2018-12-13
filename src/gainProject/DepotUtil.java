@@ -9,7 +9,7 @@ public class DepotUtil {
 
 		for (int i = 0; i < shopList.size(); i++) {
 			String[] shop = shopList.get(i);
-			String searchingShop=shop[searchType];
+			String searchingShop = shop[searchType];
 			if (searchingShop.indexOf(content) != -1)
 				result.add(i);
 			else
@@ -25,7 +25,7 @@ public class DepotUtil {
 	}
 
 	public static void ban(Vector<String[]> shopList, Vector<String> banList, int searchType) {
-		for (int i = 0; i < shopList.size(); i++) {
+		for (int i = shopList.size() - 1; i >= 0; i--) {
 			String[] shop = shopList.get(i);
 			for (int j = 0; j < banList.size(); j++)
 				if (banList.get(j).equals(shop[searchType]))

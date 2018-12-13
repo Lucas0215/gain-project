@@ -12,7 +12,7 @@ class ShopModifyPage extends JPanel {
 		setLayout(new BorderLayout());
 
 		CenterPanel centerPanel = new CenterPanel(store);
-		EastPanel eastPanel = new EastPanel(store, centerPanel);
+		EastPanel eastPanel = new EastPanel(store, centerPanel, container);
 		NorthPanel northPanel = new NorthPanel(centerPanel, eastPanel, store, card, container);
 		SouthPanel southPanel = new SouthPanel(store, centerPanel);
 
@@ -125,6 +125,7 @@ class ColorChanger implements TableCellRenderer {
 	Vector<Integer> colorMap = new Vector<>();
 
 	public ColorChanger(Vector<String> shopList) {
+		colorMap.removeAllElements();
 		for (int i = 0; i < shopList.size(); i++)
 			colorMap.add(-1);
 	}
@@ -152,7 +153,7 @@ class EastPanel extends JPanel {
 	String source;
 	JLabel mode1, mode2;
 
-	public EastPanel(CreateDepot store, CenterPanel centerPanel) {
+	public EastPanel(CreateDepot store, CenterPanel centerPanel, Container container) {
 		TypePanel typePanel = new TypePanel(store);
 		LocationPanel locationPanel = new LocationPanel(store);
 
@@ -176,13 +177,15 @@ class EastPanel extends JPanel {
 				shopData[0] = typePanel.selected;
 				shopData[1] = name.getText();
 				shopData[2] = locationPanel.selected;
-				if (typePanel.selected == null || locationPanel.selected == null)
-					JOptionPane.showMessageDialog(null, "체크를 다 해주세요", "위험!", JOptionPane.ERROR_MESSAGE);
+				if (typePanel.selected == null || locationPanel.selected == null||name.getText().equals(""))
+					JOptionPane.showMessageDialog(container, "입력을 다 해주세요", "위험!", JOptionPane.ERROR_MESSAGE);
 				else {
 					if (source.equals("추가"))
 						try {
 							centerPanel.shopControl.addRow(shopData);
 							store.add(shopData);
+							centerPanel.r.colorMap.add(-1);
+							JOptionPane.showMessageDialog(container, "추가 완료", "성공!", JOptionPane.INFORMATION_MESSAGE);
 						} catch (IOException ioe) {
 						}
 					else if (source.equals("수정"))
@@ -191,6 +194,7 @@ class EastPanel extends JPanel {
 							centerPanel.shopControl.removeRow(selected);
 							centerPanel.shopControl.insertRow(selected, shopData);
 							store.modify(shopData, selected);
+							JOptionPane.showMessageDialog(container, "수정 완료", "성공!", JOptionPane.INFORMATION_MESSAGE);
 						} catch (IOException ioe) {
 						}
 					name.setText(null);
@@ -214,7 +218,6 @@ class EastPanel extends JPanel {
 		layoutSet(name, 0, 4, 5, 1);
 		layoutSet(new JLabel("위치"), 2, 5, 1, 1);
 		layoutSet(locationPanel, 0, 6, 5, 1);
-
 		layoutSet(confirmButton, 1, 7, 1, 1);
 		layoutSet(cancelButton, 3, 7, 1, 1);
 	}

@@ -35,7 +35,10 @@ class RandomChoosePage extends JPanel {
 		JButton doRandom = new JButton("∞·¡§«ÿ¡‹");
 		doRandom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Vector<String[]> storeList = store.storeList;
+				Vector<String[]> storeList = new Vector<>();
+				for (int i = 0; i < store.storeList.size(); i++)
+					storeList.add(store.storeList.get(i));
+				
 				DepotUtil.ban(storeList, banPanel.getTypeBanList(), 0);
 				DepotUtil.ban(storeList, banPanel.getLocationBanList(), 2);
 				randomShop = DepotUtil.randomRecommend(storeList);

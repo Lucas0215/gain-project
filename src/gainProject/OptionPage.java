@@ -18,18 +18,18 @@ class OptionPage extends JPanel {
 		typeAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int reminder = 0;
-				String type = JOptionPane.showInputDialog("추가할 종류를 입력하세요");
-				if (type != null) {
+				String type = JOptionPane.showInputDialog(container, "추가할 종류를 입력하세요");
+				if (type != null && !type.equals("")) {
 					for (int i = 0; i < store.typeList.size(); i++)
 						if (type.equals(store.typeList.get(i))) {
-							JOptionPane.showMessageDialog(null, "이미 같은 종류가 있습니다", "!", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(container, "이미 같은 종류가 있습니다", "!", JOptionPane.ERROR_MESSAGE);
 							reminder = 1;
 						}
 					if (reminder == 0) {
 						store.typeList.add(type);
 						try {
 							new SaveTypeList(store.typeList);
-							JOptionPane.showMessageDialog(null, "적용완료", "성공!", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(container, "적용완료", "성공!", JOptionPane.INFORMATION_MESSAGE);
 							new UserInterface(store);
 						} catch (IOException ioe) {
 						}
@@ -43,8 +43,8 @@ class OptionPage extends JPanel {
 		typeRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int reminder = -1;
-				String type = JOptionPane.showInputDialog("삭제할 종류를 입력하세요");
-				if (type != null) {
+				String type = JOptionPane.showInputDialog(container, "삭제할 종류를 입력하세요");
+				if (type != null && !type.equals("")) {
 					for (int i = 0; i < store.typeList.size(); i++)
 						if (type.equals(store.typeList.get(i)))
 							reminder = i;
@@ -52,12 +52,12 @@ class OptionPage extends JPanel {
 						store.typeList.remove(reminder);
 						try {
 							new SaveTypeList(store.typeList);
-							JOptionPane.showMessageDialog(null, "적용완료", "성공!", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(container, "적용완료", "성공!", JOptionPane.INFORMATION_MESSAGE);
 							new UserInterface(store);
 						} catch (IOException ioe) {
 						}
 					} else
-						JOptionPane.showMessageDialog(null, "입력한 종류가 없습니다", "!", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(container, "입력한 종류가 없습니다", "!", JOptionPane.ERROR_MESSAGE);
 				}
 
 			}
@@ -67,18 +67,18 @@ class OptionPage extends JPanel {
 		locationAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int reminder = 0;
-				String location = JOptionPane.showInputDialog("추가할 장소를 입력하세요");
-				if (location != null) {
+				String location = JOptionPane.showInputDialog(container, "추가할 장소를 입력하세요");
+				if (location != null && !location.equals("")) {
 					for (int i = 0; i < store.locationList.size(); i++)
 						if (location.equals(store.locationList.get(i))) {
-							JOptionPane.showMessageDialog(null, "이미 같은 장소가 있습니다", "!", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(container, "이미 같은 장소가 있습니다", "!", JOptionPane.ERROR_MESSAGE);
 							reminder = 1;
 						}
 					if (reminder == 0) {
 						store.locationList.add(location);
 						try {
 							new SaveLocationList(store.locationList);
-							JOptionPane.showMessageDialog(null, "적용완료", "성공!", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(container, "적용완료", "성공!", JOptionPane.INFORMATION_MESSAGE);
 							new UserInterface(store);
 						} catch (IOException ioe) {
 						}
@@ -91,8 +91,8 @@ class OptionPage extends JPanel {
 		locationRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int reminder = -1;
-				String location = JOptionPane.showInputDialog("삭제할 위치를 입력하세요");
-				if (location != null) {
+				String location = JOptionPane.showInputDialog(container, "삭제할 위치를 입력하세요");
+				if (location != null && !location.equals("")) {
 					for (int i = 0; i < store.locationList.size(); i++)
 						if (location.equals(store.locationList.get(i)))
 							reminder = i;
@@ -100,12 +100,12 @@ class OptionPage extends JPanel {
 						store.locationList.remove(reminder);
 						try {
 							new SaveLocationList(store.locationList);
-							JOptionPane.showMessageDialog(null, "적용완료", "성공!", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(container, "적용완료", "성공!", JOptionPane.INFORMATION_MESSAGE);
 							new UserInterface(store);
 						} catch (IOException ioe) {
 						}
 					} else
-						JOptionPane.showMessageDialog(null, "입력한 위치가 없습니다", "!", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(container, "입력한 위치가 없습니다", "!", JOptionPane.ERROR_MESSAGE);
 				}
 
 			}
@@ -118,7 +118,7 @@ class OptionPage extends JPanel {
 				Vector<String> sortedList2 = DepotUtil.sort(store.typeList);
 				Vector<String> sortedList3 = DepotUtil.sort(store.locationList);
 				try {
-					JOptionPane.showMessageDialog(null, "적용완료", "성공!", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(container, "적용완료", "성공!", JOptionPane.INFORMATION_MESSAGE);
 					new SaveRestaurantList(sortedList1);
 					new SaveTypeList(sortedList2);
 					new SaveLocationList(sortedList3);
